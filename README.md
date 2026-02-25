@@ -84,7 +84,20 @@ The production Vite base path is read from `VITE_VITE_BASE_PATH`.
 
 ## GitHub Pages
 
-Deploy `dist/` to your GitHub Pages branch/artifact. Ensure:
+This repo includes a workflow at `.github/workflows/deploy-pages.yml` that builds and deploys on push to `main`.
+
+### One-time GitHub setup
+
+1. In GitHub repository settings, open **Pages** and set source to **GitHub Actions**.
+2. Ensure `.env.production` contains the Entra tenant/client IDs you want publicly deployed.
+3. Push to `main` (or run workflow manually with `workflow_dispatch`).
+
+The workflow automatically sets:
+
+1. `VITE_APP_BASE_URL_PROD=https://<owner>.github.io/<repo>/`
+2. `VITE_VITE_BASE_PATH=/<repo>/`
+
+Ensure:
 
 1. The deployed URL exactly matches `VITE_APP_BASE_URL_PROD`
 2. Entra redirect/logout URIs exactly match that same URL
