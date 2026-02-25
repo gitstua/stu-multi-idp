@@ -55,7 +55,7 @@ az login --tenant "<org-a-tenant-id>"
 az ad app create --display-name "stu-multi-idp-org-a" --sign-in-audience AzureADMyOrg
 APP_OBJECT_ID=$(az ad app list --display-name "stu-multi-idp-org-a" --query "[0].id" -o tsv)
 az rest --method PATCH --url "https://graph.microsoft.com/v1.0/applications/$APP_OBJECT_ID" \
-  --body '{"spa":{"redirectUris":["http://localhost:5173/","https://stu.github.io/stu-multi-idp/"]},"web":{"redirectUris":[],"logoutUrl":"https://stu.github.io/stu-multi-idp/"}}'
+  --body '{"spa":{"redirectUris":["http://localhost:5173/","https://gitstua.github.io/stu-multi-idp/"]},"web":{"redirectUris":[],"logoutUrl":"https://gitstua.github.io/stu-multi-idp/"}}'
 ```
 
 #### Org B
@@ -64,7 +64,7 @@ az login --tenant "<org-b-tenant-id>"
 az ad app create --display-name "stu-multi-idp-org-b" --sign-in-audience AzureADMyOrg
 APP_OBJECT_ID=$(az ad app list --display-name "stu-multi-idp-org-b" --query "[0].id" -o tsv)
 az rest --method PATCH --url "https://graph.microsoft.com/v1.0/applications/$APP_OBJECT_ID" \
-  --body '{"spa":{"redirectUris":["http://localhost:5173/","https://stu.github.io/stu-multi-idp/"]},"web":{"redirectUris":[],"logoutUrl":"https://stu.github.io/stu-multi-idp/"}}'
+  --body '{"spa":{"redirectUris":["http://localhost:5173/","https://gitstua.github.io/stu-multi-idp/"]},"web":{"redirectUris":[],"logoutUrl":"https://gitstua.github.io/stu-multi-idp/"}}'
 ```
 
 ## Run locally
