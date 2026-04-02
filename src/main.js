@@ -1,7 +1,6 @@
-import { initializeAuth, login, logout } from "./auth/service";
-import { providerConfigs } from "./auth/config";
-import { getAuthState, subscribeAuth } from "./store/auth";
-import "./style.css";
+import { initializeAuth, login, logout } from "./auth/service.js";
+import { providerConfigs } from "./auth/config.js";
+import { getAuthState, subscribeAuth } from "./store/auth.js";
 
 const app = document.querySelector("#app");
 

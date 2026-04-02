@@ -1,6 +1,6 @@
-import { providerConfigs } from "./config";
-import { msalClients } from "./msalClients";
-import { getAuthState, setSession } from "../store/auth";
+import { providerConfigs } from "./config.js";
+import { msalClients } from "./msalClients.js";
+import { getAuthState, setSession } from "../store/auth.js";
 
 const ACTIVE_PROVIDER_STORAGE_KEY = "active_msal_provider";
 

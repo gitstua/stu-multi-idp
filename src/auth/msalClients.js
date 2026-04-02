@@ -1,5 +1,5 @@
 import { PublicClientApplication } from "@azure/msal-browser";
-import { providerConfigs } from "./config";
+import { providerConfigs } from "./config.js";
 
 export const msalOrgA = new PublicClientApplication(providerConfigs.orga.msalConfig);
 export const msalOrgB = new PublicClientApplication(providerConfigs.orgb.msalConfig);
