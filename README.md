@@ -45,12 +45,24 @@ Create one app registration per tenant (Org A + Org B):
 
 ```bash
 npm install
-npm run build
+npm run sync:vendor
+```
+
+PowerShell Core alternative:
+
+```bash
+npm run sync:vendor:pwsh
 ```
 
 Then open the project in VS Code and use the Live Server extension:
 
 [VS Code Live Server](https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server)
+
+## Script roles
+
+- `sync-vendor` scripts: copy MSAL browser artifacts from `node_modules` into `vendor/` for local static serving.
+- `build-static` scripts: run vendor sync, then create deployable `dist/` content.
+- `npm run build` and `npm run build:pwsh`: call the build-static scripts (you do not need to run sync separately first).
 
 ## Build static artifact
 

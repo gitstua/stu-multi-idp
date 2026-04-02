@@ -3,7 +3,7 @@ set -euo pipefail
 
 ./scripts/sync-vendor.sh
 
-rm -rf dist
+node -e "require('fs').rmSync('dist', { recursive: true, force: true })"
 mkdir -p dist/src/auth dist/src/store dist/vendor/@azure/msal-browser dist/vendor/@azure/msal-common
 
 cp index.html dist/index.html
@@ -17,3 +17,4 @@ cp src/store/auth.js dist/src/store/auth.js
 
 cp -R vendor/@azure/msal-browser/dist dist/vendor/@azure/msal-browser/
 cp -R vendor/@azure/msal-common/dist dist/vendor/@azure/msal-common/
+cp -R vendor/@azure/msal-common/dist-browser dist/vendor/@azure/msal-common/
