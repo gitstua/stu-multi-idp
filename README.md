@@ -1,36 +1,31 @@
-# Dual Entra ID Vue SPA (MSAL PKCE)
+# Dual Entra ID SPA (MSAL PKCE)
 
-A basic Vue 3 + Vite SPA that can login/logout with two Microsoft Entra identity providers (Org A and Org B) using `@azure/msal-browser` and PKCE (public client, no client secret).
+A minimal vanilla JavaScript SPA that logs in/out against two Microsoft Entra identity providers (Org A and Org B) using `@azure/msal-browser` and PKCE (public client, no client secret).
 
 ## Requirements
 
 - Node.js 20+
 - npm
 
-## Environment configuration
+## Stack and dependencies
 
-Copy and edit the env files before running.
+- Runtime dependency: `@azure/msal-browser`
+- No Vite, Vue, Vue Router, or TypeScript
+- Static app served directly from files
 
-### `.env.development`
+## Runtime configuration
 
-- `VITE_APP_ENV=development`
-- `VITE_APP_BASE_URL_DEV=http://localhost:5173/`
-- `VITE_ENTRA_ORGA_TENANT_ID=...`
-- `VITE_ENTRA_ORGA_CLIENT_ID=...`
-- `VITE_ENTRA_ORGB_TENANT_ID=...`
-- `VITE_ENTRA_ORGB_CLIENT_ID=...`
+Edit `src/app-config.js`:
 
-### `.env.production`
+- `APP_ENV`: `development` or `production`
+- `APP_BASE_URL_DEV`: e.g. `http://localhost:5173/`
+- `APP_BASE_URL_PROD`: e.g. `https://<user>.github.io/<repo>/`
+- `ENTRA_ORGA_TENANT_ID`
+- `ENTRA_ORGA_CLIENT_ID`
+- `ENTRA_ORGB_TENANT_ID`
+- `ENTRA_ORGB_CLIENT_ID`
 
-- `VITE_APP_ENV=production`
-- `VITE_APP_BASE_URL_PROD=https://<user>.github.io/<repo>/`
-- `VITE_VITE_BASE_PATH=/<repo>/`
-- `VITE_ENTRA_ORGA_TENANT_ID=...`
-- `VITE_ENTRA_ORGA_CLIENT_ID=...`
-- `VITE_ENTRA_ORGB_TENANT_ID=...`
-- `VITE_ENTRA_ORGB_CLIENT_ID=...`
-
-The app fails fast at startup if required auth env vars are missing.
+The app fails fast at startup if required config values are missing.
 
 ## Entra app registrations
 
@@ -46,27 +41,6 @@ Create one app registration per tenant (Org A + Org B):
 4. No client secret
 5. Delegated scopes: `openid`, `profile`, `email`
 
-### Example Azure CLI commands (Cloud Shell)
-
-#### Org A
-
-```bash
-az login --tenant "<org-a-tenant-id>"
-az ad app create --display-name "stu-multi-idp-org-a" --sign-in-audience AzureADMyOrg
-APP_OBJECT_ID=$(az ad app list --display-name "stu-multi-idp-org-a" --query "[0].id" -o tsv)
-az rest --method PATCH --url "https://graph.microsoft.com/v1.0/applications/$APP_OBJECT_ID" \
-  --body '{"spa":{"redirectUris":["http://localhost:5173/","https://gitstua.github.io/stu-multi-idp/"]},"web":{"redirectUris":[],"logoutUrl":"https://gitstua.github.io/stu-multi-idp/"}}'
-```
-
-#### Org B
-```bash
-az login --tenant "<org-b-tenant-id>"
-az ad app create --display-name "stu-multi-idp-org-b" --sign-in-audience AzureADMyOrg
-APP_OBJECT_ID=$(az ad app list --display-name "stu-multi-idp-org-b" --query "[0].id" -o tsv)
-az rest --method PATCH --url "https://graph.microsoft.com/v1.0/applications/$APP_OBJECT_ID" \
-  --body '{"spa":{"redirectUris":["http://localhost:5173/","https://gitstua.github.io/stu-multi-idp/"]},"web":{"redirectUris":[],"logoutUrl":"https://gitstua.github.io/stu-multi-idp/"}}'
-```
-
 ## Run locally
 
 ```bash
@@ -74,34 +48,30 @@ npm install
 npm run dev
 ```
 
-## Build
+This serves the repo at `http://localhost:5173/` using Python’s static HTTP server.
+
+## Build static artifact
 
 ```bash
 npm run build
 ```
 
-The production Vite base path is read from `VITE_VITE_BASE_PATH`.
+This creates `dist/` by copying:
+
+- app files from `src/`
+- `index.html`
+- required MSAL browser modules from `node_modules/@azure/msal-browser/dist` and `node_modules/@azure/msal-common/dist`
 
 ## GitHub Pages
 
-This repo includes a workflow at `.github/workflows/deploy-pages.yml` that builds and deploys on push to `main`.
+This repo includes `.github/workflows/deploy-pages.yml` which:
 
-### One-time GitHub setup
+1. installs npm dependencies
+2. patches `APP_BASE_URL_PROD` in `src/app-config.js` to the current repo URL
+3. runs `npm run build`
+4. uploads `dist/` to Pages
 
-1. In GitHub repository settings, open **Pages** and set source to **GitHub Actions**.
-2. Ensure `.env.production` contains the Entra tenant/client IDs you want publicly deployed.
-3. Push to `main` (or run workflow manually with `workflow_dispatch`).
-
-The workflow automatically sets:
-
-1. `VITE_APP_BASE_URL_PROD=https://<owner>.github.io/<repo>/`
-2. `VITE_VITE_BASE_PATH=/<repo>/`
-
-Ensure:
-
-1. The deployed URL exactly matches `VITE_APP_BASE_URL_PROD`
-2. Entra redirect/logout URIs exactly match that same URL
-3. `VITE_VITE_BASE_PATH` matches the repo path (for project pages)
+One-time setup: In repository settings, set Pages source to **GitHub Actions**.
 
 ## App behavior
 

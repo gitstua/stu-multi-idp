@@ -7,6 +7,15 @@
   </head>
   <body>
     <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
+    <script src="./src/app-config.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "@azure/msal-browser": "./node_modules/@azure/msal-browser/dist/index.mjs",
+          "@azure/msal-common/browser": "./node_modules/@azure/msal-common/dist/index-browser.mjs"
+        }
+      }
+    </script>
+    <script type="module" src="./src/main.js"></script>
   </body>
 </html>

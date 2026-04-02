@@ -1,12 +1,10 @@
-import type { AccountInfo, AuthenticationResult } from "@azure/msal-browser";
-import type { ProviderKey } from "./config";
 import { providerConfigs } from "./config";
 import { msalClients } from "./msalClients";
-import { useAuthStore } from "../store/auth";
+import { getAuthState, setSession } from "../store/auth";
 
 const ACTIVE_PROVIDER_STORAGE_KEY = "active_msal_provider";
 
-function setStoredProvider(provider: ProviderKey | null): void {
+function setStoredProvider(provider) {
   if (!provider) {
     sessionStorage.removeItem(ACTIVE_PROVIDER_STORAGE_KEY);
     return;
@@ -14,7 +12,7 @@ function setStoredProvider(provider: ProviderKey | null): void {
   sessionStorage.setItem(ACTIVE_PROVIDER_STORAGE_KEY, provider);
 }
 
-function getStoredProvider(): ProviderKey | null {
+function getStoredProvider() {
   const value = sessionStorage.getItem(ACTIVE_PROVIDER_STORAGE_KEY);
   if (value === "orga" || value === "orgb") {
     return value;
@@ -22,14 +20,11 @@ function getStoredProvider(): ProviderKey | null {
   return null;
 }
 
-async function handleRedirectForProvider(
-  provider: ProviderKey,
-  hash: string,
-): Promise<AuthenticationResult | null> {
+function handleRedirectForProvider(provider, hash) {
   return msalClients[provider].handleRedirectPromise(hash);
 }
 
-function resolveCachedSession(provider: ProviderKey): AccountInfo | null {
+function resolveCachedSession(provider) {
   const client = msalClients[provider];
   const account = client.getActiveAccount() ?? client.getAllAccounts()[0] ?? null;
   if (account) {
@@ -38,9 +33,7 @@ function resolveCachedSession(provider: ProviderKey): AccountInfo | null {
   return account;
 }
 
-export async function initializeAuth(): Promise<void> {
-  const { setSession } = useAuthStore();
-
+export async function initializeAuth() {
   await Promise.all([msalClients.orga.initialize(), msalClients.orgb.initialize()]);
 
   const hash = window.location.hash;
@@ -76,29 +69,26 @@ export async function initializeAuth(): Promise<void> {
   setStoredProvider(null);
 }
 
-export async function login(provider: ProviderKey): Promise<void> {
+export async function login(provider) {
   const client = msalClients[provider];
   setStoredProvider(provider);
   await client.loginRedirect(providerConfigs[provider].loginRequest);
 }
 
-export async function logout(): Promise<void> {
-  const { activeProvider, activeAccount, setSession } = useAuthStore();
+export async function logout() {
+  const { activeProvider, activeAccount } = getAuthState();
 
-  if (!activeProvider.value || !activeAccount.value) {
+  if (!activeProvider || !activeAccount) {
     setSession(null, null);
     setStoredProvider(null);
     return;
   }
 
-  const provider = activeProvider.value;
-  const account = activeAccount.value;
-
   setSession(null, null);
   setStoredProvider(null);
 
-  await msalClients[provider].logoutRedirect({
-    account,
-    postLogoutRedirectUri: providerConfigs[provider].postLogoutRedirectUri,
+  await msalClients[activeProvider].logoutRedirect({
+    account: activeAccount,
+    postLogoutRedirectUri: providerConfigs[activeProvider].postLogoutRedirectUri,
   });
 }

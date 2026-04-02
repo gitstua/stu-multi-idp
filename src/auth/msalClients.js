@@ -7,4 +7,4 @@ export const msalOrgB = new PublicClientApplication(providerConfigs.orgb.msalCon
 export const msalClients = {
   orga: msalOrgA,
   orgb: msalOrgB,
-} as const;
+};
