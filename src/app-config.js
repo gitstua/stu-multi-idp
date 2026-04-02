@@ -1,9 +1,9 @@
 window.__APP_CONFIG__ = {
-  APP_ENV: window.location.hostname === "localhost" ? "development" : "production",
+  APP_ENV: "production",
   APP_BASE_URL_DEV: "http://localhost:5173/",
-  APP_BASE_URL_PROD: "https://<user>.github.io/<repo>/",
-  ENTRA_ORGA_TENANT_ID: "",
-  ENTRA_ORGA_CLIENT_ID: "",
-  ENTRA_ORGB_TENANT_ID: "",
-  ENTRA_ORGB_CLIENT_ID: "",
+  APP_BASE_URL_PROD: "https://gitstua.github.io/stu-multi-idp/",
+  ENTRA_ORGA_TENANT_ID: "8c57cd70-5a7a-47b3-9c3a-abb5753a56ab",
+  ENTRA_ORGA_CLIENT_ID: "974bc257-1b0f-40b4-98ef-c266ecede4c4",
+  ENTRA_ORGB_TENANT_ID: "9e1c4e36-4f81-4b67-b7cd-ed19cb8c61b5",
+  ENTRA_ORGB_CLIENT_ID: "9a252609-cf3a-45c2-bb15-bea21ad63c1b",
 };

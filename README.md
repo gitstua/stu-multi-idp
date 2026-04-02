@@ -17,9 +17,9 @@ A minimal vanilla JavaScript SPA that logs in/out against two Microsoft Entra id
 
 Edit `src/app-config.js`:
 
-- `APP_ENV`: `development` or `production`
-- `APP_BASE_URL_DEV`: e.g. `http://localhost:5173/`
-- `APP_BASE_URL_PROD`: e.g. `https://<user>.github.io/<repo>/`
+- `APP_ENV`: set to `production` for deployed usage
+- `APP_BASE_URL_DEV`: `http://localhost:5173/`
+- `APP_BASE_URL_PROD`: `https://gitstua.github.io/stu-multi-idp/`
 - `ENTRA_ORGA_TENANT_ID`
 - `ENTRA_ORGA_CLIENT_ID`
 - `ENTRA_ORGB_TENANT_ID`
@@ -67,9 +67,8 @@ This creates `dist/` by copying:
 This repo includes `.github/workflows/deploy-pages.yml` which:
 
 1. installs npm dependencies
-2. patches `APP_BASE_URL_PROD` in `src/app-config.js` to the current repo URL
-3. runs `npm run build`
-4. uploads `dist/` to Pages
+2. runs `npm run build`
+3. uploads `dist/` to Pages
 
 One-time setup: In repository settings, set Pages source to **GitHub Actions**.
 
