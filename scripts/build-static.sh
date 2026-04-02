@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+./scripts/sync-vendor.sh
+
 rm -rf dist
 mkdir -p dist/src/auth dist/src/store dist/vendor/@azure/msal-browser dist/vendor/@azure/msal-common
 
@@ -13,8 +15,5 @@ cp src/auth/service.js dist/src/auth/service.js
 cp src/auth/msalClients.js dist/src/auth/msalClients.js
 cp src/store/auth.js dist/src/store/auth.js
 
-cp -R node_modules/@azure/msal-browser/dist dist/vendor/@azure/msal-browser/
-cp -R node_modules/@azure/msal-common/dist dist/vendor/@azure/msal-common/
-
-perl -pi -e 's|\./node_modules/\@azure/msal-browser/dist|\./vendor/\@azure/msal-browser/dist|g' dist/index.html
-perl -pi -e 's|\./node_modules/\@azure/msal-common/dist|\./vendor/\@azure/msal-common/dist|g' dist/index.html
+cp -R vendor/@azure/msal-browser/dist dist/vendor/@azure/msal-browser/
+cp -R vendor/@azure/msal-common/dist dist/vendor/@azure/msal-common/

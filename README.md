@@ -45,10 +45,12 @@ Create one app registration per tenant (Org A + Org B):
 
 ```bash
 npm install
-npm run dev
+npm run build
 ```
 
-This serves the repo at `http://localhost:5173/` using Python’s static HTTP server.
+Then open the project in VS Code and use the Live Server extension:
+
+[VS Code Live Server](https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server)
 
 ## Build static artifact
 
@@ -56,11 +58,17 @@ This serves the repo at `http://localhost:5173/` using Python’s static HTTP se
 npm run build
 ```
 
+PowerShell Core alternative:
+
+```bash
+npm run build:pwsh
+```
+
 This creates `dist/` by copying:
 
 - app files from `src/`
 - `index.html`
-- required MSAL browser modules from `node_modules/@azure/msal-browser/dist` and `node_modules/@azure/msal-common/dist`
+- required MSAL browser modules via `scripts/sync-vendor.sh` into `vendor/`, then into `dist/vendor/`
 
 ## GitHub Pages
 

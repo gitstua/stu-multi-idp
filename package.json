@@ -4,8 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "python3 -m http.server 5173",
-    "build": "./scripts/build-static.sh"
+    "build": "./scripts/build-static.sh && echo \"Build complete. For local preview, use VS Code Live Server: https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server or similar extension.\"",
+    "build:pwsh": "pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/build-static.ps1 && echo \"Build complete. For local preview, use VS Code Live Server: https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server or similar extension.\"",
+    "sync:vendor:pwsh": "pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/sync-vendor.ps1"
   },
   "dependencies": {
     "@azure/msal-browser": "^3.23.0"
